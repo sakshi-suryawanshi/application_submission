@@ -1,0 +1,34 @@
+name: B12 Submission
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Build action run link
+        run: echo "ACTION_RUN_LINK=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" >> $GITHUB_ENV
+
+      - name: Submit application payload
+        env:
+          NAME: Sakshi Suryawanshi
+          EMAIL: sakshi.suryawanshi520@gmail.com
+          RESUME_LINK: https://sakshi-suryawanshi.vercel.app/
+          REPOSITORY_LINK: https://github.com/sakshi-suryawanshi/application_submission
+          SIGNING_SECRET: hello-there-from-b12
+        run: python b12_application_submission.py
