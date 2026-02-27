@@ -44,7 +44,7 @@ def main() -> None:
 
     canonical_json = json.dumps(payload, separators=(",", ":"), sort_keys=True)
     # Helpful for CI verification: this is exactly what gets signed and sent.
-    print(canonical_json)
+    print(f"CANONICAL_JSON: {canonical_json}")
     json_body = canonical_json.encode("utf-8")
     secret = os.getenv("SIGNING_SECRET", "hello-there-from-b12")
     signature = hmac.new(secret.encode("utf-8"), json_body, hashlib.sha256).hexdigest()
@@ -66,7 +66,7 @@ def main() -> None:
         receipt = result.get("receipt")
         if not receipt:
             raise ValueError(f"Successful response missing receipt: {result}")
-        print(receipt)
+        print(f"RECEIPT: {receipt}")
         return
 
     print(f"Error: {response.status_code}")
